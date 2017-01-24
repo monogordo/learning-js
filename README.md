@@ -137,6 +137,37 @@ An array is an object that holds values (of any type) not particularly in named 
 // "Hello!"
 ```
 
+### Scope
+
+**Lexical vs. Dynamic scope**
+
+Lexical scope means that scope is defined by author-time decisions of where functions are declared. The lexing phase of compilation is essentially able to know where and how all identifiers are declared, and thus predict how they will be looked-up during execution.
+
+Dynamic scope, by contrast, doesn't concern itself with how and where functions and scopes are declared, but rather where they are called from. In other words, the scope chain is based on the call-stack, not the nesting of scopes in code. Lexical scope is write-time, whereas dynamic scope (and `this`!) are runtime.
+
+JavaScript which uses lesxical scoping outputs `2` when it executes the code below. But if JavaScript had dynamic scope, when foo() is executed, theoretically the code below would instead result in `3` as the output.
+
+```javascript
+function foo() {
+  console.log( a );
+}
+
+function bar() {
+  var a = 3;
+  foo();
+}
+
+var a = 2;
+
+bar();
+```
+
+**`eval()` and `with`**
+
+Two mechanisms in JavaScript can "cheat" lexical scope: eval(..) and with. The former can modify existing lexical scope (at runtime) by evaluating a string of "code" which has one or more declarations in it. The latter essentially creates a whole new lexical scope (again, at runtime) by treating an object reference as a "scope" and that object's properties as scoped identifiers.
+
+The downside to these mechanisms is that it defeats the Engine's ability to perform compile-time optimizations regarding scope look-up, because the Engine has to assume pessimistically that such optimizations will be invalid. Code will run slower as a result of using either feature. Don't use them.
+
 ### Closure
 A way to "remember" and continue to access a function's scope (its variables) even once the function has finished running.
 ```javascript
