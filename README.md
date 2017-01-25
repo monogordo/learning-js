@@ -84,7 +84,9 @@ console.log(y);  // ReferenceError: y is not defined
 
 Variable declarations are hoisted to the top of the function or scope. So a variable can be used before it is declared. *var* and *let* will produce different outcomes when it comes to hoisting.
 
-**Note:** Only the declarations themselves are hoisted, while any assignments or other executable logic are left in place
+Function declarations are hoisted as well, but function expressions are not. Both function declarations and variable declarations are hoisted. But functions are hoisted first, and then variables.
+
+**Note:** Only the declarations themselves are hoisted, while any assignments or other executable logic are left in place for the execution phase.
 
 ```javascript
 x = 2;
@@ -100,6 +102,13 @@ var x = 3;
 ```javascript
 console.log(x); // ReferenceError
 let x = 3;
+```
+
+```javascript
+foo(); // not ReferenceError, but TypeError!
+var foo = function bar() {
+  // ...
+};
 ```
 
 ### Truthy vs. Falsy
@@ -199,7 +208,13 @@ plusTen( 13 );      // 23 <-- 10 + 13
 ```
 
 ### Modules
-The most common usage of closure in JavaScript is the module pattern. Modules let you define private implementation details (variables, functions) that are hidden from the outside world, as well as a public API that is accessible from the outside.
+The most common usage of closure in JavaScript is the module pattern. Modules let you define private implementation details (variables, functions) that are hidden from the outside world, as well as a public API that is accessible from the outside. 
+
+There are two "requirements" for the module pattern to be exercised:
+
+1. There must be an outer enclosing function, and it must be invoked at least once (each time creates a new module instance).
+
+2. The enclosing function must return back at least one inner function, so that this inner function has closure over the private scope, and can access and/or modify that private state.
 
 ```javascript
 function User(){
