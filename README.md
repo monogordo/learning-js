@@ -80,6 +80,37 @@ if (true) {
 console.log(y);  // ReferenceError: y is not defined
 ```
 
+
+### Truthy vs. Falsy
+
+
+**"falsy" values in JavaScript**:
+
+* `""` (empty string)
+* `0`, `-0`, `NaN` (invalid number)
+* `null`, `undefined`
+* `false`
+
+**"truthy" values in JavaScript**:
+
+Any value that's not on this "falsy" list is "truthy." Here are some examples of those:
+
+* `"hello"`
+* `42`
+* `true`
+* `[ ]`, `[ 1, "2", 3 ]` (arrays)
+* `{ }`, `{ a: 42 }` (objects)
+* `function foo() { .. }` (functions)
+
+
+### Arrays
+
+An array is an object that holds values (of any type) not particularly in named properties/keys, but rather in numerically indexed positions.
+
+
+### Functions
+TBA
+
 ### Hoisting
 
 Variable declarations are hoisted to the top of the function or scope. So a variable can be used before it is declared. *var* and *let* will produce different outcomes when it comes to hoisting.
@@ -110,33 +141,6 @@ var foo = function bar() {
   // ...
 };
 ```
-
-### Truthy vs. Falsy
-
-
-**"falsy" values in JavaScript**:
-
-* `""` (empty string)
-* `0`, `-0`, `NaN` (invalid number)
-* `null`, `undefined`
-* `false`
-
-**"truthy" values in JavaScript**:
-
-Any value that's not on this "falsy" list is "truthy." Here are some examples of those:
-
-* `"hello"`
-* `42`
-* `true`
-* `[ ]`, `[ 1, "2", 3 ]` (arrays)
-* `{ }`, `{ a: 42 }` (objects)
-* `function foo() { .. }` (functions)
-
-
-### Arrays
-
-An array is an object that holds values (of any type) not particularly in named properties/keys, but rather in numerically indexed positions.
-
 
 ### Immediately Invoked Function Expressions (IIFEs)
 ```javascript
@@ -240,6 +244,26 @@ var fred = User();
 fred.login( "fred", "12Battery34!" );
 ```
 
+### Objects
+
+Object are compound values that can contain properties that each hold their own values of any type. Properties can either be accessed with dot notation (e.g. `obj.a`) or bracket notation (e.g. `obj["a"]`). 
+
+```javascript
+var obj = {
+  a: "hello world",
+  b: 42,
+  c: true
+};
+
+obj.a;      // "hello world"
+obj.b;      // 42
+obj.c;      // true
+
+obj["a"];   // "hello world"
+obj["b"];   // 42
+obj["c"];   // true
+```
+
 ### `this` Identifier
 
 ```javascript
@@ -266,25 +290,60 @@ foo.call( obj2 );   // "obj2"
 new foo();          // undefined
 ```
 
-### Objects
+### Math object
 
-Object are compound values that can contain properties that each hold their own values of any type. Properties can either be accessed with dot notation (e.g. `obj.a`) or bracket notation (e.g. `obj["a"]`). 
+**Math.random()**
+The `Math.random()` function returns a floating-point, pseudo-random number in the range [0, 1)
+
+Getting a random integer between two values, inclusive:
 
 ```javascript
-var obj = {
-  a: "hello world",
-  b: 42,
-  c: true
-};
-
-obj.a;      // "hello world"
-obj.b;      // 42
-obj.c;      // true
-
-obj["a"];   // "hello world"
-obj["b"];   // 42
-obj["c"];   // true
+function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 ```
 
 ### Prototypes
 When you reference a property on an object, if that property doesn't exist, JavaScript will automatically use that object's internal prototype reference to find another object to look for the property on. You could think of this almost as a fallback if the property is missing.
+
+## DOM
+### `window.pageXOffset` / `window.pageYOffset`
+
+The `pageXOffset` property is an alias for the `scrollX` property. It returns the number of pixels that the document has already been scrolled horizontally.
+
+For cross-browser compatibility, use `window.pageXOffset` instead of `window.scrollX`. Additionally, older versions of Internet Explorer (< 9) do not support either property
+
+```javascript
+window.addEventListener('scroll', function(){
+    overlay.style.top = window.pageYOffset + 'px';
+    overlay.style.left = window.pageXOffset + 'px';
+});
+```
+### `Window.innerWidth` / `Window.innerHeight`
+
+Width and height (in pixels) of the browser window viewport including, if rendered, the horizontal and vertical scrollbar.
+
+```javascript
+window.addEventListener('resize', function(){
+    overlay.style.width = window.innerWidth + 'px';
+    overlay.style.width = window.innerHeight + 'px';
+});
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
